@@ -126,14 +126,14 @@ val response = client.performRequest<Response>(request)
 ```kt
 val client = GraphQLClient("http://example.com/graphql")
 
-val query = ```
+val query = """
     query getUser($id: ID!) {
         user(id: $id) {
             id
             name
         }
     }
-```
+"""
 
 val request = GraphQLRequest(
     query = query,
@@ -150,7 +150,7 @@ val response = client.performRequest<Response>(request)
 ```kt
 val client = GraphQLClient("http://example.com/graphql")
 
-val query = ```
+val query = """
     query singleUser {
         user {
             id
@@ -164,7 +164,7 @@ val query = ```
             name
         }
     }
-```
+"""
 
 val response = client.performRequest<Response>(
         GraphQLRequest(
