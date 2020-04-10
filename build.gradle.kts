@@ -52,12 +52,7 @@ publishing {
     }
 }
 
-fun findProperty(name: String): String {
-
-    val prop = project.property(name) as String?
-
-     return prop ?: throw Exception("Specify $name")
-}
+fun findProperty(name: String) = project.findProperty(name) as String?
 
 bintray {
     user = findProperty("bintrayUser")
