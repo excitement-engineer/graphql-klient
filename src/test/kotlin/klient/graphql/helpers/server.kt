@@ -41,7 +41,23 @@ val server: ApplicationEngine = embeddedServer(Jetty, serverPort) {
             post {
                 call.respond(HttpStatusCode.InternalServerError, "Something went wrong")
             }
+        }
 
+        route("error-no-data") {
+            post {
+                call.respond(HttpStatusCode.OK, """
+                       {
+                           "errors":[
+                              {
+                                 "message":"Invalid Syntax"
+                              }
+                           ],
+                           "data":null,
+                           "extensions":null,
+                           "dataPresent":false
+                        }
+                """)
+            }
         }
     }
 }

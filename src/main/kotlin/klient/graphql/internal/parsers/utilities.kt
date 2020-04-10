@@ -47,10 +47,11 @@ internal fun <T>JsonNode.parse(responseClass: Class<T>): T {
     return response
 }
 
-internal fun ObjectNode.safeGet(name: String): JsonNode? {
-    return if (has(name)) {
-        get(name)
+internal fun ObjectNode.safeGet(name: String): JsonNode? =
+    if (this.has(name)) {
+        val got = this.get(name)
+        if (got.isNull) null else got
     } else {
         null
     }
-}
+

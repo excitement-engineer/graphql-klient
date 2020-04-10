@@ -3,7 +3,7 @@ import org.gradle.internal.impldep.org.joda.time.Instant
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.3.21"
-val versionNo = "1.0.0"
+val versionNo = "1.0.1"
 
 project.group = "com.github.excitement-engineer"
 project.version = versionNo
@@ -34,6 +34,8 @@ dependencies {
     testImplementation("io.ktor:ktor-server-jetty:1.1.3")
     testImplementation("com.graphql-java:graphql-java-tools:3.2.0")
     testImplementation("junit:junit:4.11")
+    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.9.1")
+
 }
 
 tasks {

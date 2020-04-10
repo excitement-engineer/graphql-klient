@@ -12,6 +12,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFails
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlin.test.assertNull
 
 class ClientTest {
 
@@ -334,4 +335,18 @@ class ClientTest {
         )
     }
 
+    @Test
+    fun `real errors`() {
+        val clientWrong = GraphQLClient(
+                endpoint = "http://localhost:$serverPort/error-no-data"
+        )
+
+        val response = clientWrong.performRequest<Response>(
+                GraphQLRequest( query = "query" )
+        )
+
+        assertTrue(response.hasErrors)
+        assertNull(response.data)
+        assertTrue(response.errors.isNotEmpty())
+    }
 }
