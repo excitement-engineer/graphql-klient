@@ -34,6 +34,8 @@ dependencies {
     testImplementation("io.ktor:ktor-server-jetty:1.1.3")
     testImplementation("com.graphql-java:graphql-java-tools:3.2.0")
     testImplementation("junit:junit:4.11")
+    testImplementation("org.apache.logging.log4j:log4j-slf4j-impl:2.9.1")
+
 }
 
 tasks {

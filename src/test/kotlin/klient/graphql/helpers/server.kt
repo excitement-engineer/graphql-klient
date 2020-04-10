@@ -43,13 +43,19 @@ val server: ApplicationEngine = embeddedServer(Jetty, serverPort) {
             }
         }
 
-        route("realerror") {
+        route("error-no-data") {
             post {
                 call.respond(HttpStatusCode.OK, """
-                       {"errors":[{"message":"Invalid Syntax : offending token 'badquery' at line 1 column 1","sourcePreview":"badquery { oops }\n","offendingToken":"badquery","locations":[{"line":1,"column":1,"sourceName":null}],"errorType":"InvalidSyntax","path":null,"extensions":null}],
-                       "data":null,
-                       "extensions":null,
-                       "dataPresent":false}
+                       {
+                           "errors":[
+                              {
+                                 "message":"Invalid Syntax"
+                              }
+                           ],
+                           "data":null,
+                           "extensions":null,
+                           "dataPresent":false
+                        }
                 """)
             }
         }

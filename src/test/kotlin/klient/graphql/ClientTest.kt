@@ -338,15 +338,15 @@ class ClientTest {
     @Test
     fun `real errors`() {
         val clientWrong = GraphQLClient(
-                endpoint = "http://localhost:$serverPort/realerror"
+                endpoint = "http://localhost:$serverPort/error-no-data"
         )
 
-        val x = clientWrong.performRequest<Response>(
-                GraphQLRequest( query = "badquery { oops }" )
+        val response = clientWrong.performRequest<Response>(
+                GraphQLRequest( query = "query" )
         )
 
-        assertTrue(x.hasErrors)
-        assertNull(x.data)
-        assertTrue(x.errors.size > 0)
+        assertTrue(response.hasErrors)
+        assertNull(response.data)
+        assertTrue(response.errors.isNotEmpty())
     }
 }
