@@ -11,6 +11,11 @@ internal fun ArrayNode.parseErrors(): List<GraphQLError> = map { errorObject ->
         .parseError()
 }
 
+internal fun <T>ArrayNode.parseGenericErrors(errorClass: Class<T>): List<T> = map { errorObject ->
+    errorObject
+            .assertIsObject()
+            .parse(errorClass)
+}
 
 private fun ObjectNode.parseError(): GraphQLError {
 

@@ -36,6 +36,98 @@ class ClientTest {
         )
     )
 
+    private val genericClient = GraphQLClient(
+            endpoint = "http://localhost:$serverPort/graphql-generic",
+            headers = mapOf(
+                    "Authorization" to "abc123"
+            )
+    )
+
+    @Test
+    fun `generic parses an error`() {
+
+        val response = genericClient.performGenericRequest<ErrorResponse, CustomGraphQLError>(
+                GraphQLRequest(
+                        query = """
+                    {
+                        error
+                    }
+                """.trimIndent()
+                )
+        )
+
+        assertEquals(
+                expected  = GenericGraphQLResponse(
+                        data = ErrorResponse(null),
+                        errors = listOf<CustomGraphQLError>(
+                                CustomGraphQLError(
+                                        message = "Exception while fetching data (/error) : Something went wrong",
+                                        locations = listOf(
+                                                Location(
+                                                        line = 2,
+                                                        column = 5
+                                                )
+                                        ),
+                                        path = listOf("error"),
+                                        extensions = mapOf(
+                                                "reason" to "unknown"
+                                        ),
+                                        test = "test",
+                                        customMessage = "customMessage"
+                                )
+                        )
+                ),
+                actual = response
+        )
+
+
+        assertTrue {
+            response.hasErrors
+        }
+    }
+
+    @Test
+    fun ` generic errors query returns successful for performGenericRequest`() {
+
+        val response =
+                genericClient.performGenericRequest<Response, CustomGraphQLError>(
+                        GraphQLRequest(
+                                query = """ {
+                        person {
+                             name
+                             age
+                             school {
+                                name
+                                address
+                             }
+                        }
+
+                    } """.trimIndent()
+                        )
+                )
+
+        assertEquals(
+                expected = GenericGraphQLResponse(
+                        data = Response(
+                                person = Person(
+                                        name = "John",
+                                        age = 18,
+                                        school = School(
+                                                name = "elementary",
+                                                address = "Main street"
+                                        )
+                                )
+                        )
+                ),
+                actual = response
+        )
+
+        assertFalse {
+            response.hasErrors
+        }
+
+    }
+
     @Test
     fun `returns the expected response`() {
         val response = client.performRequest<Response>(
