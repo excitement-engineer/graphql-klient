@@ -3,7 +3,7 @@ import org.gradle.internal.impldep.org.joda.time.Instant
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val kotlinVersion = "1.3.21"
-val versionNo = "1.1"
+val versionNo = "1.1.0"
 
 project.group = "com.github.excitement-engineer"
 project.version = versionNo

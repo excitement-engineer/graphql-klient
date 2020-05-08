@@ -1,5 +1,6 @@
 package klient.graphql.internal.parsers
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import klient.graphql.GenericGraphQLResponse
 import klient.graphql.internal.http.HTTPResponse
 import klient.graphql.internal.http.assertIsValid
@@ -13,18 +14,11 @@ internal inline fun <reified Data> parseResponse(httpResponse: HTTPResponse) =
 internal inline fun <reified Data, reified Error> parseGenericResponse(httpResponse: HTTPResponse) =
         parseGenericResponse(httpResponse, Data::class.java, Error::class.java)
 
-//GenericGraphQLResponse<Data, Error>
 
 @PublishedApi
 internal fun <Data> parseResponse(httpResponse: HTTPResponse, responseClass: Class<Data>): GraphQLResponse<Data> {
 
-    val validResponse = httpResponse.assertIsValid()
-
-    val (response) = validResponse
-
-    val jsonResponse = response
-        .toJson()
-        .assertIsObject()
+    val jsonResponse = parseJsonResponse(httpResponse)
 
     val data = jsonResponse
         .safeGet("data")
@@ -45,13 +39,7 @@ internal fun <Data> parseResponse(httpResponse: HTTPResponse, responseClass: Cla
 @PublishedApi
 internal fun <Data, Error> parseGenericResponse(httpResponse: HTTPResponse, responseClass: Class<Data>, errorClass: Class<Error>): GenericGraphQLResponse<Data, Error> {
 
-    val validResponse = httpResponse.assertIsValid()
-
-    val (response) = validResponse
-
-    val jsonResponse = response
-            .toJson()
-            .assertIsObject()
+    val jsonResponse = parseJsonResponse(httpResponse)
 
     val data = jsonResponse
             .safeGet("data")
@@ -67,4 +55,15 @@ internal fun <Data, Error> parseGenericResponse(httpResponse: HTTPResponse, resp
             data = data,
             errors = errors ?: emptyList()
     )
+}
+
+private fun parseJsonResponse(httpResponse: HTTPResponse): ObjectNode {
+    val validResponse = httpResponse.assertIsValid()
+
+    val (response) = validResponse
+
+    val jsonResponse = response
+            .toJson()
+            .assertIsObject()
+    return jsonResponse
 }
