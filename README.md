@@ -174,3 +174,39 @@ val response = client.performRequest<Response>(
     )
 
 ```
+
+
+### Using Generic Error
+The `performGenericRequest` method allows developers to handle error responses from GraphQL servers that add additional information which does not exist in the GraphQL Specification.
+```kt
+data class CustomGraphQLError (
+        val message: String,
+        val locations: List<Location> = emptyList(),
+        val path: List<String> = emptyList(),
+        val extensions: Map<String, Any> = emptyMap(),
+        val test: String,
+        val customMessage: String
+)
+
+data class Response(
+    val person: Person
+)
+
+val client = GraphQLClient("http://example.com/graphql")
+
+val query = """ {
+                   person {
+                        name
+                        age
+                        school {
+                           name
+                           address
+                        }
+                   }
+
+               } """.trimIndent()
+
+val response = client.performGenericRequest<Response, CustomGraphQLError>( GraphQLRequest(query = query))
+
+
+```

@@ -1,6 +1,7 @@
 package klient.graphql
 
 import klient.graphql.internal.http.performHttpRequest
+import klient.graphql.internal.parsers.parseGenericResponse
 import klient.graphql.internal.parsers.parseResponse
 import klient.graphql.internal.serializers.serialize
 
@@ -19,6 +20,19 @@ data class GraphQLClient(
         )
 
         return parseResponse(httpResponse)
+    }
+
+    inline fun <reified Data, reified Error> performGenericRequest(request: GraphQLRequest): GenericGraphQLResponse<Data, Error> {
+
+        val requestBody = request.serialize()
+
+        val httpResponse = performHttpRequest(
+                url = endpoint,
+                headers = headers,
+                requestBody = requestBody
+        )
+
+        return parseGenericResponse(httpResponse)
     }
 }
 

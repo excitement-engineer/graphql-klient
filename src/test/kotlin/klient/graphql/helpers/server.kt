@@ -37,6 +37,27 @@ val server: ApplicationEngine = embeddedServer(Jetty, serverPort) {
             }
         }
 
+        graphQL("/graphql-generic", schema) {
+            config {
+                context = Context(
+                        accessToken = call.request.header("Authorization")
+                )
+
+                formatError = {
+
+                    val error = toSpecification()
+
+                    error["extensions"] = mapOf(
+                            "reason" to "unknown"
+                    )
+                    error["customMessage"] = "customMessage"
+                    error["test"] = "test"
+
+                    error
+                }
+            }
+        }
+
         route("error") {
             post {
                 call.respond(HttpStatusCode.InternalServerError, "Something went wrong")

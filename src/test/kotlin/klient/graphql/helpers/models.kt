@@ -1,5 +1,7 @@
 package klient.graphql.helpers
 
+import klient.graphql.Location
+
 data class Person(
     val name: String,
     val age: Int,
@@ -30,5 +32,14 @@ data class AuthenticatedResponse(
 data class PersonWithoutSchool(
     val name: String,
     val age: Int
+)
+
+data class CustomGraphQLError (
+        val message: String,
+        val locations: List<Location> = emptyList(),
+        val path: List<String> = emptyList(),
+        val extensions: Map<String, Any> = emptyMap(),
+        val test: String,
+        val customMessage: String
 )
 
