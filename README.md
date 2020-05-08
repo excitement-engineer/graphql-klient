@@ -206,7 +206,7 @@ val query = """ {
 
                } """.trimIndent()
 
-val response = genericClient.performGenericRequest<Response, CustomGraphQLError>( GraphQLRequest(query = query))
+val response = client.performGenericRequest<Response, CustomGraphQLError>( GraphQLRequest(query = query))
 
 
 ```
